@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Birthday shourya 🐒</title>
+  <style>
+    :root{
+      --bg:#0c0a09;
+      --ink:#e9eef9;
+      --muted:#b7c2da;
+      --border:rgba(255,255,255,.16);
+      --glass1:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      --btnGrad:linear-gradient(90deg,#ff6b93,#ff4668);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--ink);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;
+      overflow-x:hidden;
+    }
+
+    /* LAYER 1: Aurora gradient blobs */
+    .aurora{
+      position:fixed; inset:0; z-index:-3; overflow:hidden; background:#0c0a09;
+    }
+    .blob{
+      position:absolute; width:60vw; height:60vw; filter:blur(90px);
+      opacity:.55; mix-blend-mode:screen; will-change:transform;
+      animation: float 18s ease-in-out infinite;
+    }
+    @keyframes float{
+      0%{transform:translate3d(0,0,0)}
+      50%{transform:translate3d(60px,-40px,0)}
+      100%{transform:translate3d(0,0,0)}
+    }
+    .pink{background:radial-gradient(400px 400px at center, hsla(333,70%,55%,.40), transparent 60%); left:-12vw; top:12vh}
+    .purple{background:radial-gradient(420px 420px at center, hsla(282,82%,54%,.30), transparent 60%); right:-10vw; top:18vh; animation-duration:20s}
+    .blue{background:radial-gradient(420px 420px at center, hsla(210,89%,60%,.30), transparent 60%); left:20vw; bottom:-12vh; animation-duration:22s}
+    .gold{background:radial-gradient(420px 420px at center, hsla(35,90%,60%,.30), transparent 60%); right:16vw; bottom:-10vh; animation-duration:24s}
+
+    /* LAYER 2: Canvas hearts behind content */
+    canvas#heartsCanvas{
+      position:fixed; inset:0; z-index:-2; pointer-events:none;
+    }
+
+    /* Content container */
+    .container{position:relative; z-index:1; max-width:860px; margin:0 auto; padding:24px}
+    header{padding-top:80px; text-align:center}
+
+    /* Gradient heading text */
+    .title{
+      font-family:"Playfair Display", Georgia, serif;
+      font-size: clamp(28px, 6vw, 64px); margin:0;
+      background:linear-gradient(90deg,#ffe7ef,#ffffff);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .pulse{animation:pulse 1.8s ease-in-out infinite; display:inline-block}
+    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+    .subtitle{color:var(--muted); margin-top:8px}
+
+    /* Glass card */
+    .card{
+      background:var(--glass1);
+      border:1px solid var(--border);
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+      box-shadow:0 20px 60px rgba(0,0,0,.45);
+      border-radius:20px; padding:20px; margin:16px 0;
+    }
+    .card h2{
+      font-family:"Playfair Display", Georgia, serif;
+      margin:0 0 8px; font-size: clamp(20px, 3.5vw, 32px);
+      background:linear-gradient(90deg,#ffe7ef,#ffffff);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .card p{color:#dbe3f3; margin:8px 0}
+
+    /* Buttons */
+    .btn{
+      display:inline-block; background:var(--btnGrad); color:#fff; border:0;
+      border-radius:999px; padding:12px 20px; font-weight:700; letter-spacing:.2px;
+      box-shadow:0 10px 30px rgba(255,70,104,.45);
+      transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+      will-change:transform,box-shadow; cursor:pointer;
+    }
+    .btn:hover{transform:translateY(-2px) scale(1.05); box-shadow:0 16px 42px rgba(255,70,104,.65); filter:brightness(1.06)}
+    .btn:active{transform:translateY(1px) scale(.98); box-shadow:0 8px 24px rgba(255,70,104,.45); filter:brightness(.98)}
+    .btn:disabled{opacity:.65; cursor:not-allowed; transform:none; box-shadow:none}
+
+    /* Progress bar */
+    .progress{
+      position:fixed; top:14px; left:50%; transform:translateX(-50%);
+      width:min(540px,86vw); height:10px; z-index:2;
+      background:rgba(255,255,255,.08); border:1px solid var(--border);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border-radius:999px; box-shadow:0 8px 28px rgba(0,0,0,.35);
+    }
+    .bar{height:100%; width:0%; background:var(--btnGrad); border-radius:999px; transition:width .35s ease}
+
+    /* Polaroid */
+    .polaroid{
+      width:min(720px,86vw); aspect-ratio:4/3; background:#fff; border-radius:12px;
+      box-shadow:0 25px 60px rgba(0,0,0,.55); transform-style:preserve-3d; perspective:1200px;
+      position:relative; transition:transform .2s ease; will-change:transform; margin:0 auto;
+    }
+    .polaroid-inner{position:absolute; inset:16px 16px 60px 16px; background:#eee; border-radius:6px; overflow:hidden}
+    .polaroid img{width:100%; height:100%; object-fit:cover; display:block}
+    .polaroid-caption{position:absolute; bottom:12px; left:16px; right:16px; text-align:center; font-weight:700; color:#333; letter-spacing:.2px}
+
+    .divider{height:1px; background:rgba(255,255,255,.12); border-radius:1px; margin:12px 0}
+    .footer{color:var(--muted); text-align:center; padding:22px 0 40px}
+  </style>
+</head>
+<body>
+  <!-- LAYER 1: Aurora -->
+  <div class="aurora" aria-hidden="true">
+    <div class="blob pink"></div>
+    <div class="blob purple"></div>
+    <div class="blob blue"></div>
+    <div class="blob gold"></div>
+  </div>
+
+  <!-- LAYER 2: Canvas hearts -->
+  <canvas id="heartsCanvas"></canvas>
+
+  <!-- Progress bar -->
+  <div class="progress"><div id="bar" class="bar"></div></div>
+
+  <!-- Content -->
+  <div class="container">
+    <header>
+      <div class="pulse" style="font-size:48px">❤️</div>
+      <h1 class="title">Hey Beautiful,</h1>
+      <p class="subtitle">I built a little world for you—just to bring a smile to your face on your special day.</p>
+    </header>
+
+    <!-- Step 1 -->
+    <section id="step1" class="card">
+      <h2>Grand Welcome</h2>
+      <p>Let’s take a tiny, heartfelt journey. Ready?</p>
+      <button class="btn" data-next="2">Let's Begin</button>
+    </section>
+
+    <!-- Step 2 -->
+    <section id="step2" class="card" style="display:none">
+      <div style="font-size:40px; text-align:center">🎉</div>
+      <h2>Happy Birthday!</h2>
+      <p>Another year of you making the world brighter. Your existence is a gift, and I'm lucky to witness it.</p>
+      <button class="btn" data-next="3">There's more...</button>
+    </section>
+
+    <!-- Step 3 -->
+    <section id="step3" class="card" style="display:none">
+      <h2>A Few Things I Adore About You</h2>
+      <div class="divider"></div>
+      <div style="display:grid; gap:12px; grid-template-columns:1fr; }
+        @media(min-width:820px){ grid-template-columns:1fr 1fr }">
+        <div class="card" style="margin:0">
+          <strong>✨ Your Unmatched Kindness</strong>
+          <p>The genuine warmth you show to everyone is something truly rare and beautiful.</p>
+        </div>
+        <div class="card" style="margin:0">
+          <strong>😊 That Smile</strong>
+          <p>It's a work of art.</p>
+        </div>
+        <div class="card" style="margin:0">
+          <strong>🌟 Your Radiant Spirit</strong>
+          <p>Your passion for life is infectious. Being around you makes everything feel more exciting and possible.</p>
+        </div>
+      </div>
+      <button class="btn" data-next="4" style="margin-top:12px">Remember this?</button>
+    </section>
+
+    <!-- Step 4 -->
+    <section id="step4" class="card" style="display:none">
+      <h2>That One Time...</h2>
+      <div class="polaroid" id="polaroid">
+        <div class="polaroid-inner">
+          <img src="https://i.ibb.co/6Z6XgCg/crush.webp" alt="Memory">
+        </div>
+        <div class="polaroid-caption">Our favorite memory.</div>
+      </div>
+      <p style="text-align:center; margin-top:12px">Every moment with you feels like a scene from a movie I'd watch on repeat.</p>
+      <button class="btn" data-next="5">One last thing...</button>
+    </section>
+
+    <!-- Step 5 -->
+    <section id="step5" class="card" style="display:none">
+      <div style="font-size:40px; text-align:center">🎂</div>
+      <h2>My Wish For You</h2>
+      <p>May the next year bring you all the love, success, and pure happiness you deserve. May your dreams soar higher than ever.</p>
+      <div class="divider"></div>
+      <h2 id="finalText" style="opacity:0; transform:translateY(10px); text-align:center">Happy Birthday shourya 🐒</h2>
+      <div style="text-align:center; margin-top:10px">
+        <button id="celebrateBtn" class="btn">Celebrate!</button>
+      </div>
+    </section>
+
+    <div class="footer">Made with ❤️ for shourya 🐒</div>
+  </div>
+
+  <!-- Confetti (tiny inline lib) -->
+  <script>
+    // Minimal confetti without external CDN
+    // Simple emoji shower instead of particle confetti
+    function emojiConfetti(duration=5000){
+      const emojis = ["❤️","💖","✨","🎉","🎂"];
+      const end = Date.now() + duration;
+      const layer = document.createElement("div");
+      layer.style.position="fixed"; layer.style.inset="0"; layer.style.pointerEvents="none";
+      layer.style.zIndex="50"; document.body.appendChild(layer);
+
+      function spawn(){
+        const e = document.createElement("div");
+        e.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        e.style.position="absolute";
+        e.style.left = Math.random()*window.innerWidth + "px";
+        e.style.top = "-40px";
+        e.style.fontSize = (24 + Math.random()*16) + "px";
+        e.style.textShadow = "0 6px 16px rgba(0,0,0,.45)";
+        layer.appendChild(e);
+        const drift = (Math.random()-0.5)*100;
+        const time = 2200 + Math.random()*2000;
+        e.animate([
+          { transform:`translate(0,0) rotate(0deg)`, opacity:1 },
+          { transform:`translate(${drift}px, ${window.innerHeight+80}px) rotate(${(Math.random()-0.5)*90}deg)`, opacity:.3 }
+        ], { duration: time, easing: "ease-in" }).onfinish = ()=> e.remove();
+      }
+
+      (function loop(){
+        for(let i=0;i<8;i++) spawn();
+        if(Date.now() < end) requestAnimationFrame(loop);
+        else setTimeout(()=> layer.remove(), 600);
+      })();
+    }
+  </script>
+
+  <script>
+    // Progress
+    const bar = document.getElementById("bar");
+    function setProgress(n, total=5){
+      bar.style.width = Math.max(0, Math.min(100, ((n-1)/(total-1))*100)) + "%";
+    }
+    setProgress(1);
+
+    // Step navigation
+    const steps = [1,2,3,4,5];
+    function showStep(n){
+      steps.forEach(i=>{
+        const el = document.getElementById("step"+i);
+        if(!el) return;
+        if(i===n){
+          el.style.display="block";
+          el.animate([{opacity:0, transform:"translateY(12px) scale(.98)"},{opacity:1, transform:"translateY(0) scale(1)"}], {duration:400, easing:"ease-out"});
+        }else{
+          if(el.style.display!=="none"){
+            el.animate([{opacity:1, transform:"translateY(0) scale(1)"},{opacity:0, transform:"translateY(12px) scale(.98)"}], {duration:300, easing:"ease-out"}).onfinish=()=>{el.style.display="none"};
+          }
+        }
+      });
+      setProgress(n);
+    }
+    document.querySelectorAll("button[data-next]").forEach(b=> b.addEventListener("click", ()=> showStep(Number(b.dataset.next))));
+
+    // Polaroid tilt
+    const polaroid = document.getElementById("polaroid");
+    if(polaroid){
+      let rect = polaroid.getBoundingClientRect();
+      window.addEventListener("resize", ()=> rect = polaroid.getBoundingClientRect());
+      polaroid.addEventListener("mousemove", e=>{
+        const x = (e.clientX - rect.left)/rect.width - .5;
+        const y = (e.clientY - rect.top)/rect.height - .5;
+        polaroid.style.transform = `rotateX(${y*-6}deg) rotateY(${x*8}deg)`;
+      });
+      polaroid.addEventListener("mouseleave", ()=> polaroid.style.transform = "rotateX(0deg) rotateY(0deg)");
+    }
+
+    // Hearts canvas layer
+    const canvas = document.getElementById("heartsCanvas");
+    const ctx = canvas.getContext("2d");
+    function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+    addEventListener("resize", resize); resize();
+
+    const hearts = [];
+    const count = 24;
+    for(let i=0;i<count;i++){
+      hearts.push({
+        x: Math.random()*canvas.width,
+        y: Math.random()*canvas.height,
+        r: 10 + Math.random()*18,
+        vx: (-0.5 + Math.random())*0.6,
+        vy: (-0.5 + Math.random())*0.6,
+        phase: Math.random()*Math.PI*2
+      });
+    }
+
+    function drawHeart(x,y,size,shine=true){
+      // Heart path
+      ctx.save();
+      ctx.translate(x,y);
+      ctx.scale(size/20, size/20);
+      ctx.beginPath();
+      ctx.moveTo(0,0);
+      ctx.bezierCurveTo(0,0,-10,-10,-10,-18);
+      ctx.bezierCurveTo(-10,-26,0,-30,0,-18);
+      ctx.bezierCurveTo(0,-30,10,-26,10,-18);
+      ctx.bezierCurveTo(10,-10,0,0,0,0);
+      // Gradient fill (pink/red)
+      const grad = ctx.createLinearGradient(-12,-28,12,0);
+      grad.addColorStop(0,"#ff4668");
+      grad.addColorStop(1,"#ff6b93");
+      ctx.fillStyle = grad;
+      ctx.fill();
+      // Shine
+      if(shine){
+        ctx.globalAlpha = 0.25;
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.ellipse(-5,-20,4,6,0,0,Math.PI*2);
+        ctx.fill();
+      }
+      ctx.restore();
+      ctx.globalAlpha = 1;
+    }
+
+    let t = 0;
+    function tick(){
+      t += 0.01;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      hearts.forEach(h=>{
+        h.x += h.vx + Math.sin(t + h.phase)*0.15;
+        h.y += h.vy + Math.cos(t + h.phase)*0.12;
+        // Wrap
+        if(h.x < -40) h.x = canvas.width+40;
+        if(h.x > canvas.width+40) h.x = -40;
+        if(h.y < -40) h.y = canvas.height+40;
+        if(h.y > canvas.height+40) h.y = -40;
+        drawHeart(h.x, h.y, h.r, true);
+      });
+      requestAnimationFrame(tick);
+    }
+    tick();
+
+    // Finale
+    const finalText = document.getElementById("finalText");
+    const celebrateBtn = document.getElementById("celebrateBtn");
+    if(celebrateBtn){
+      celebrateBtn.addEventListener("click", ()=>{
+        celebrateBtn.disabled = true;
+        celebrateBtn.animate([{opacity:1},{opacity:0}], {duration:300, easing:"ease-out"}).onfinish = ()=> { celebrateBtn.style.opacity=0 };
+        finalText.animate([{opacity:0, transform:"translateY(10px)"},{opacity:1, transform:"translateY(0)"}], {duration:500, easing:"ease-out"}).onfinish=()=>{
+          finalText.style.opacity=1; finalText.style.transform="translateY(0)";
+        };
+        emojiConfetti(5000);
+        // Hearts swirl outward then fade
+        const cx = canvas.width/2, cy = canvas.height/2;
+        const start = performance.now();
+        function swirl(now){
+          const elapsed = now - start;
+          hearts.forEach(h=>{
+            const dx = h.x - cx, dy = h.y - cy;
+            const ang = Math.atan2(dy, dx) + 0.02;
+            const rad = Math.hypot(dx,dy) + 0.35;
+            h.x = cx + Math.cos(ang)*rad;
+            h.y = cy + Math.sin(ang)*rad - 0.25; // upward drift
+          });
+          // Fade canvas towards the end
+          if(elapsed > 3500){
+            const alpha = Math.max(0, 1 - (elapsed-3500)/1200);
+            canvas.style.opacity = alpha.toFixed(2);
+          }
+          if(elapsed < 4700) requestAnimationFrame(swirl);
+        }
+        requestAnimationFrame(swirl);
+      });
+    }
+  </script>
+</body>
+</html>
+<!-- Step 4: Shared Memory (Polaroid with your photo) -->
+<section id="step4" class="card" style="display:none">
+  <h2>That One Time...</h2>
+  <div class="polaroid" id="polaroid">
+    <div class="polaroid-inner">
+      <!-- Yahan apni photo ka path/URL daalo -->
+      <img src="your-photo.jpeg" alt="Memory">
+    </div>
+    <!-- Caption me pasandida aurat likha hai -->
+    <div class="polaroid-caption">Meri pasandida aurat 💖</div>
+  </div>
+  <p style="text-align:center; margin-top:12px">
+    Every moment with you feels like a scene from a movie I'd watch on repeat.
+  </p>
+  <button class="btn" data-next="5">One last thing...</button>
+</section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pasandida Aurat</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, #f8cdda, #1d2b64);
+      color: #fff;
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    h1 {
+      font-size: 3em;
+      margin-bottom: 0.5em;
+      animation: fadeIn 3s ease-in-out;
+    }
+    p {
+      font-size: 1.5em;
+      max-width: 600px;
+      line-height: 1.6;
+      animation: slideUp 2s ease-in-out;
+    }
+    .heart {
+      font-size: 4em;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    @keyframes slideUp {
+      from {transform: translateY(50px); opacity: 0;}
+      to {transform: translateY(0); opacity: 1;}
+    }
+    @keyframes pulse {
+      0% {transform: scale(1);}
+      50% {transform: scale(1.2);}
+      100% {transform: scale(1);}
+    }
+  </style>
+</head>
+<body>
+  <h1>मेरी पसंदीदा लड़की💖</h1>
+  <p>
+    
+  </p>
+  <div class="heart">❤️</div>
+</body>
+</html>
